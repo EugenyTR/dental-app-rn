@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
-const Appointment = ({ user, diagnosis, active, time }) => {
+import { GrayText } from "../components";
+
+const Appointment = ({ user, diagnosis, active, time, navigate }) => {
     return (
-                <GroupItem>
+                <GroupItem onPress={navigate.bind(this, 'Patient')}>
                     <Avatar source={{
                         uri:
                         user.avatar
@@ -34,11 +36,6 @@ const GroupDate = styled.Text`
    display: flex;
    align-items: center;
    padding: 1%;
-`;
-
-const GrayText = styled.Text`
- font-size: 16px;
- color: #8b979f;
 `;
 
 const FullName = styled.Text`
