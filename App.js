@@ -12,7 +12,7 @@ const AppNavigator = createStackNavigator({
         screen: PatientScreen,
     },
 }, {
-    initialRouteName: 'Patient'
+    initialRouteName: 'Home'
 });
 
 export default createAppContainer(AppNavigator);
