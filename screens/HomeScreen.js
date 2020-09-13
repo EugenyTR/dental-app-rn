@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {View, Text, SectionList, StyleSheet} from 'react-native';
 import {Appointment, SectionTitle} from "../components";
-
 import {Ionicons} from "@expo/vector-icons";
-
 import styled from "styled-components/native/dist/styled-components.native.esm";
+import axios from 'axios';
 
-const DATA = [
+/* const DATA = [
     {
         title: "10 сентября",
         data: [
@@ -91,34 +90,41 @@ const DATA = [
             }
         ]
     },
-];
+]; */
 
 const HomeScreen = ({ navigation }) => {
-    return (
-        <Container>
-            <SectionList
-                sections={DATA}
-                keyExtractor={(item, index) => index}
-                renderItem={({ item }) => <Appointment navigate={navigation.navigate} item={item} />}
-                renderSectionHeader={({ section: { title } }) => (
-                    <SectionTitle>{title}</SectionTitle>
-                )}
-            />
-            <PlusButton style={
-                {shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 2,
-                    elevation: 6,}
-            }
-            >
-                <Ionicons name="ios-add" size={36} color="#fff" />
-            </PlusButton>
-        </Container>
-    );
+       const [data, setData] = useState(null);
+
+       useEffect(() => {
+         axios.get('https://trycode.pw/c/A5TFH.json').then(({ data }) => {
+             setData(data);
+         });
+       }, []);
+        return (
+            <Container>
+                {data && <SectionList
+                    sections={data}
+                    keyExtractor={(item, index) => index}
+                    renderItem={({ item }) => <Appointment navigate={navigation.navigate} item={item} />}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <SectionTitle>{title}</SectionTitle>
+                    )}
+                />}
+                <PlusButton style={
+                    {shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 2,
+                        },
+                        shadowOpacity: 0.8,
+                        shadowRadius: 2,
+                        elevation: 6,}
+                }
+                >
+                    <Ionicons name="ios-add" size={36} color="#fff" />
+                </PlusButton>
+            </Container>
+    )
 };
 
 HomeScreen.navigationOptions = {

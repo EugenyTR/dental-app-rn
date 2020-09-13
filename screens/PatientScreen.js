@@ -6,16 +6,21 @@ import {Foundation, AntDesign} from "@expo/vector-icons";
 import { GrayText, Button, Badje } from "../components";
 
 const PatientScreen = ({ navigation }) => {
+    // const {user, diagnosis, active, time} = item;
+
     return (
         <View style={{ flex: 1 }}>
             <PatientDetails>
 
-                <View style={{ flex: 1 }}>
-                    <Avatar sourse={{ uri:'https://sun9-50.userapi.com/impg/jaZ5Ua8cucsSTvCC03rQ7EsEeW4vrPoULNGbyA/4Fgo-y1m6tE.jpg?size=100x0&quality=88&crop=0,189,1620,1620&sign=3dc05f0cf824f47431308cd89b3f3634&ava=1' }} />
-                </View>
-
-                    <PatientFullName>{navigation.getParam('user', {}).fullname}</PatientFullName>
-                    <GrayText>{navigation.getParam('user', {}).phone}</GrayText>
+                <PatientCardHeaderWrapper>
+                    <Avatar source={{
+                        uri: navigation.getParam('user', {}).avatar,
+                        }} />
+                    <PatientCardNameTelephoneWrapper>
+                        <PatientFullName>{navigation.getParam('user', {}).fullname}</PatientFullName>
+                        <GrayText>{navigation.getParam('user', {}).phone}</GrayText>
+                    </PatientCardNameTelephoneWrapper>
+                </PatientCardHeaderWrapper>
 
                     <PatientButtons>
                         <FormulaButtonView>
@@ -41,7 +46,10 @@ const PatientScreen = ({ navigation }) => {
                         </AppointmentCardRow>
                         <AppointmentCardRow style={{ marginTop: 20, justifyContent: 'space-between' }}>
                             <Badje style={{ width: 150 }}active>11.01.2020 - 15:20</Badje>
-                            <Badje color='green'>1500 P</Badje>
+                            <Badje color={{
+                                backgound: "green",
+                                color: "greedn"
+                            }}>1500 P</Badje>
                         </AppointmentCardRow>
                     </AppointmentCard>
                 </Container>
@@ -49,6 +57,14 @@ const PatientScreen = ({ navigation }) => {
         </View>
     );
 };
+
+const PatientCardNameTelephoneWrapper = styled.View`
+flex-direction: column;
+`;
+
+const PatientCardHeaderWrapper = styled.View`
+    flex-direction: row;
+`;
 
 const AppointmentCardLabel = styled.Text`
 font-size: 16px;
