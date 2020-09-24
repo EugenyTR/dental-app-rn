@@ -1,13 +1,11 @@
 import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
-import {Foundation, AntDesign} from "@expo/vector-icons";
+import {Foundation, AntDesign, Ionicons} from "@expo/vector-icons";
 
 import { GrayText, Button, Badje } from "../components";
 
 const PatientScreen = ({ navigation }) => {
-    // const {user, diagnosis, active, time} = item;
-
     return (
         <View style={{ flex: 1 }}>
             <PatientDetails>
@@ -36,6 +34,9 @@ const PatientScreen = ({ navigation }) => {
             <PatientAppointments>
                 <Container>
                     <AppointmentCard>
+                        <MoreButton>
+                            <Ionicons name="md-more" size={36} color="#a3a3a3" />
+                        </MoreButton>
                         <AppointmentCardRow>
                             <AntDesign name="medicinebox" size={24} color="#a3a3a3" />
                             <AppointmentCardLabel>Зуб: <Text style={{ fontWeight: '600' }}>12</Text></AppointmentCardLabel>
@@ -57,6 +58,15 @@ const PatientScreen = ({ navigation }) => {
         </View>
     );
 };
+
+const MoreButton = styled.TouchableOpacity`
+display: flex;
+justify-content: center;
+align-items: center;
+position: absolute;
+right: 25px;
+top: 25px;
+`;
 
 const PatientCardNameTelephoneWrapper = styled.View`
 flex-direction: column;
