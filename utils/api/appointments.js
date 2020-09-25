@@ -1,5 +1,5 @@
 import axios from '../../core/axios';
 
 export default {
-    get: () => axios.get('/appointments'),
+    get: () => axios.get('/appointments')
 };

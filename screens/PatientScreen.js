@@ -3,7 +3,7 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import {Foundation, AntDesign, Ionicons} from "@expo/vector-icons";
 
-import { GrayText, Button, Badje } from "../components";
+import { GrayText, Button, Badje, Container } from "../components";
 
 const PatientScreen = ({ navigation }) => {
     return (
@@ -102,11 +102,6 @@ border-radius: 50px;
 width: 60px;
 height: 60px;
 margin-right: 15px;
-`;
-
-const Container = styled.View`
-flex: 1;
-padding: 25px;
 `;
 
 const PatientDetails = styled(Container)`
