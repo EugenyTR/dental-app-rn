@@ -49,7 +49,7 @@ const PatientScreen = ({ navigation }) => {
                             <Badje style={{ width: 150 }}active>11.01.2020 - 15:20</Badje>
                             <Badje color={{
                                 backgound: "green",
-                                color: "greedn"
+                                color: "#fff"
                             }}>1500 P</Badje>
                         </AppointmentCardRow>
                     </AppointmentCard>

@@ -1,4 +1,4 @@
-import axios from '../../core/axios';
+import axios from '../../core/axios.js';
 
 export default {
     get: () => axios.get('/patients'),

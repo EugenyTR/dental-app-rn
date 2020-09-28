@@ -57,7 +57,6 @@ const HomeScreen = ({ navigation }) => {
                         shadowRadius: 2,
                         elevation: 6,}
                 }
-
                 onPress={navigation.navigate.bind(this, 'AddPatient')}
                 >
                     <Ionicons name="ios-add" size={36} color="#fff" />
