@@ -1,17 +1,16 @@
 import axios from 'axios';
-import Constants from 'expo-constants';
-const {
-    manifest
-} = Constants;
+import { Constants } from 'expo';
+const { manifest } = Constants;
+
 
 axios.defaults.baseURL =
-    'http://' +
-    (typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev ?
-        manifest.debuggerHost
+  'http://' +
+  (typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? manifest.debuggerHost
         .split(`:`)
         .shift()
-        .concat(`:6666`) :
-        `api.example.com`);
+        .concat(`:6666`)
+    : `api.example.com`);
 
 console.log(axios.defaults.baseURL);
 

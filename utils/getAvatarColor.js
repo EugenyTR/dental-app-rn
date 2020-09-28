@@ -1,25 +1,25 @@
 export default letter => {
-    const charCode = letter.charCodeAt();
-    if (charCode >= 1048 && charCode <= 1055) {
-        return {
-            background: '#f5d6d9',
-            color: '#f38181'
-        };
-    }
-    if (charCode >= 1049 && charCode <= 1063) {
-        return {
-            background: '#f8ecd5',
-            color: '#f1a32f'
-        };
-    }
-    if (charCode >= 1064 && charCode <= 1071) {
-        return {
-            background: '#dad5f8',
-            color: '#816cff'
-        };
-    }
+  const charCode = letter.charCodeAt();
+  if (charCode >= 1048 && charCode <= 1055) {
     return {
-        background: '#e9f5ff',
-        color: '#2a86ff'
+      background: '#F5D6D9',
+      color: '#F38181',
     };
-}
+  }
+  if (charCode >= 1049 && charCode <= 1063) {
+    return {
+      background: '#F8ECD5',
+      color: '#F1A32F',
+    };
+  }
+  if (charCode >= 1064 && charCode <= 1071) {
+    return {
+      background: '#DAD5F8',
+      color: '#816CFF',
+    };
+  }
+  return {
+    background: '#E9F5FF',
+    color: '#2A86FF',
+  };
+};

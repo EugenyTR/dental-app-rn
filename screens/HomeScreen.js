@@ -1,97 +1,126 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, SectionList, StyleSheet, Animated} from 'react-native';
-import {Appointment, SectionTitle} from "../components";
-import {Ionicons} from "@expo/vector-icons";
-import styled from "styled-components/native/dist/styled-components.native.esm";
-import axios from 'axios';
+import { SectionList, Alert, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import styled from 'styled-components/native';
 import Swipeable from 'react-native-swipeable-row';
 
-import {appointmentsApi} from '../utils/api';
+import { Appointment, SectionTitle, PlusButton } from '../components';
+import { appointmentsApi } from '../utils/api';
 
-const HomeScreen = ({ navigation }) => {
-       const [data, setData] = useState(null);
-       const [isLoading, setIsLoading] = useState(false);
+const HomeScreen = props => {
+  const { navigation } = props;
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdateTime, setlastUpdateTime] = useState(null);
 
-       const fetchAppointments = () => {
+  const fetchAppointments = () => {
+    setIsLoading(true);
+    appointmentsApi
+      .get()
+      .then(({ data }) => {
+        setData(data.data);
+      })
+      .finally(e => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(fetchAppointments, []);
+
+  useEffect(fetchAppointments, [navigation.state.params]);
+
+  // TODO: Продумать удаление приемов
+  const removeAppointment = id => {
+    Alert.alert(
+      'Удаление приема',
+      'Вы действительно хотите удалить прием?',
+      [
+        {
+          text: 'Отмена',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel'
+        },
+        {
+          text: 'Удалить',
+          onPress: () => {
             setIsLoading(true);
-            appointmentsApi.get().then(({ data }) => {
-                 setData(data.data);
-                 setIsLoading(false);
-             })
-             .catch(e => { 
+            appointmentsApi
+              .remove(id)
+              .then(() => {
+                fetchAppointments();
+              })
+              .catch(() => {
                 setIsLoading(false);
-             });
-           }
+              });
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
 
-       useEffect(fetchAppointments, []);
-
-        return (
-            <Container>
-                {data && <SectionList
-                    sections={data}
-                    keyExtractor={(item, index) => index}
-                    onRefresh={fetchAppointments}
-                    refreshing={isLoading}
-                    renderItem={({ item }) => (
-                        <Swipeable rightButtons={[
-                            <SwipeView>
-                                <Text>Left</Text>
-                                <Text>Right</Text>
-                            </SwipeView>
-                        ]}
-                        >
-                            <Appointment navigate={navigation.navigate} item={item} />
-                        </Swipeable>
-                    )}
-                    renderSectionHeader={({ section: { title } }) => (
-                        <SectionTitle>{title}</SectionTitle>
-                    )}
-                />}
-                <PlusButton style={
-                    {shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 2,
-                        },
-                        shadowOpacity: 0.8,
-                        shadowRadius: 2,
-                        elevation: 6,}
-                }
-                onPress={navigation.navigate.bind(this, 'AddPatient')}
+  return (
+    <Container>
+      {data && (
+        <SectionList
+          sections={data}
+          keyExtractor={item => item._id}
+          onRefresh={fetchAppointments}
+          refreshing={isLoading}
+          renderItem={({ item }) => (
+            <Swipeable
+              rightButtons={[
+                <SwipeViewButton style={{ backgroundColor: '#B4C1CB' }}>
+                  <Ionicons name="md-create" size={28} color="white" />
+                </SwipeViewButton>,
+                <SwipeViewButton
+                  onPress={removeAppointment.bind(this, item._id)}
+                  style={{ backgroundColor: '#F85A5A' }}
                 >
-                    <Ionicons name="ios-add" size={36} color="#fff" />
-                </PlusButton>
-            </Container>
-    )
+                  <Ionicons name="ios-close" size={48} color="white" />
+                </SwipeViewButton>
+              ]}
+            >
+              <Appointment navigate={navigation.navigate} item={item} />
+            </Swipeable>
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <SectionTitle>{title}</SectionTitle>
+          )}
+        />
+      )}
+      <PlusButton onPress={navigation.navigate.bind(this, 'AddPatient')} />
+    </Container>
+  );
 };
 
-HomeScreen.navigationOptions = {
-    title: 'Пациенты',
-    headerTintColor: '#2a86ff',
-    headerStyle: {
-        elevation: 0.8,
-        shadowOpacity: 0.5,
-    }
-};
+HomeScreen.navigationOptions = ({ navigation }) => ({
+  title: 'Журнал приёмов',
+  headerTintColor: '#2A86FF',
+  headerStyle: {
+    elevation: 0.8,
+    shadowOpacity: 0.8
+  },
+  headerRight: () => (
+    <TouchableOpacity
+      onPress={navigation.navigate.bind(this, 'Patients')}
+      style={{ marginRight: 20 }}
+    >
+      <Ionicons name="md-people" size={28} color="black" />
+    </TouchableOpacity>
+  )
+});
 
-const SwipeView = styled.View`
-
-`;
-
-const PlusButton = styled.TouchableOpacity`
-align-items: center;
-justify-content: center;
-border-radius: 50px;
-width: 64px;
-height: 64px;
-background: #2a86ff;
-position: absolute;
-right: 15px;
-bottom: 15px;
+const SwipeViewButton = styled.TouchableOpacity`
+  width: 75px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Container = styled.View`
- flex: 1;
+  flex: 1;
 `;
 
 export default HomeScreen;

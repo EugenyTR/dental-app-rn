@@ -9,7 +9,10 @@ import { patientsApi } from '../utils/api';
 import { Button, Container } from '../components';
 
 const AddPatientScreen = ({ navigation }) => {
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({
+    fullname: fullname,
+    phone: phone
+  });
 
   const handleChange = (name, e) => {
     const text = e.nativeEvent.text;
